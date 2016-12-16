@@ -1,4 +1,4 @@
 <?php
 
-Route::get('hollan/weather',
-  'hollan\Weather\Controllers\WeatherController@getData');
+Route::get('hollanbo/weather',
+  'hollanbo\Weather\Controllers\WeatherController@getData');

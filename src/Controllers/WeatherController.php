@@ -1,8 +1,8 @@
 <?php
-namespace hollan\Weather\Controllers;
+namespace hollanbo\Weather\Controllers;
 
 use App\Http\Controllers\Controller;
-use hollan\Weather\Repositories\WeatherRepository;
+use hollanbo\Weather\Repositories\WeatherRepository;
 
 class WeatherController extends Controller
 {

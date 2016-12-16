@@ -1,9 +1,9 @@
 <?php
-namespace hollan\Weather\Repositories;
+namespace hollanbo\Weather\Repositories;
 
 use Carbon\Carbon;
 use App;
-use hollan\Weather\Models\Data;
+use hollanbo\Weather\Models\Data;
 
 class WeatherRepository {
 
@@ -63,7 +63,7 @@ class WeatherRepository {
 
     public function saveData(array $data)
     {
-        $model = resolve('hollan\Weather\Models\Data');
+        $model = resolve('hollanbo\Weather\Models\Data');
         $model->insert($data);
     }
 }

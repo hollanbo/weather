@@ -1,6 +1,6 @@
 <?php
 
-namespace hollan\Weather\Models;
+namespace hollanbo\Weather\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

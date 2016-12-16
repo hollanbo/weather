@@ -1,6 +1,6 @@
 <?php
 
-namespace hollan\Weather;
+namespace hollanbo\Weather;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +24,6 @@ class WeatherServiceProvider extends ServiceProvider
     public function register()
     {
         include __DIR__.'/routes.php';
-        $this->app->make('hollan\Weather\Controllers\WeatherController');
+        $this->app->make('hollanbo\Weather\Controllers\WeatherController');
     }
 }
