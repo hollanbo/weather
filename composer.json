@@ -1,6 +1,6 @@
 {
-    "name": "hollan/weather",
-    "description": "Reads eather data from home weather station",
+    "name": "hollanbo/weather",
+    "description": "Reads weather data from home weather station",
     "license": "open source",
     "authors": [
         {
