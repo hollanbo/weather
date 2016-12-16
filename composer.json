@@ -1,0 +1,13 @@
+{
+    "name": "hollan/weather",
+    "description": "Reads eather data from home weather station",
+    "license": "open source",
+    "authors": [
+        {
+            "name": "Borut Hollan",
+            "email": "borut.hollan@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
