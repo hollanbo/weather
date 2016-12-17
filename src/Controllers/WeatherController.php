@@ -11,7 +11,8 @@ class WeatherController extends Controller
     {
         $data = $repo->readFromStation();
         $repo->saveData($data);
-        dd('ok', $data);
+
+        dd($data);
     }
 
 }

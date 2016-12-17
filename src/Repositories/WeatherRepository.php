@@ -9,9 +9,9 @@ class WeatherRepository {
 
     public function readFromStation()
     {
-        $path = base_path() . '/python';
+        $path = __DIR__ . '/../python';
 
-        $command = 'python ' . $path . '/bleWeatherStation.py F5:AC:BC:3B:90:48 2>&1';
+        $command = 'python ' . $path . '/oregon_scientific_ble.py F5:AC:BC:3B:90:48 2>&1';
 
         $out = [];
         exec($command, $out);
@@ -57,7 +57,6 @@ class WeatherRepository {
 
         }
 
-        dd($weather_data);
         return $weather_data;
     }
 

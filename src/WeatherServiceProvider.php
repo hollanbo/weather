@@ -3,6 +3,7 @@
 namespace hollanbo\Weather;
 
 use Illuminate\Support\ServiceProvider;
+use hollanbo\Weather\Commands\GetWeatherData;
 
 class WeatherServiceProvider extends ServiceProvider
 {
@@ -14,6 +15,12 @@ class WeatherServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__.'/migrations');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                GetWeatherData::class
+            ]);
+        }
     }
 
     /**
