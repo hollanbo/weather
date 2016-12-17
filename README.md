@@ -7,7 +7,7 @@ Reading and saving weather data from Oregon Scientific RAR213HG weather station
 
 #### 1. Edit composer.json
 
-> By running command in terminal
+> By running command in terminal:  
 > composer require hollanbo/weather
 
 OR
