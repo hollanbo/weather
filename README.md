@@ -6,7 +6,9 @@ Reading and saving weather data from Oregon Scientific RAR213HG weather station
 Using composer:
 
 Run composer require hollanbo/weather
+
 OR
+
 Add to required list of packages in composer.json:
 "hollanbo/weather": "^1.0"
 
