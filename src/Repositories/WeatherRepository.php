@@ -7,6 +7,15 @@ use hollanbo\Weather\Models\Data;
 
 class WeatherRepository {
 
+    /**
+     * Read data from weather station.
+     *
+     * @return  array   Formatted data with timestamps
+     *
+     * @author Borut Hollan <borut.hollan@easistent.com>
+     *
+     * @version 1.0
+     */
     public function readFromStation()
     {
         $path = __DIR__ . '/../python';
@@ -60,6 +69,17 @@ class WeatherRepository {
         return $weather_data;
     }
 
+    /**
+     * Save Weather station data to database.
+     *
+     * @param   array  $data weather station data
+     *
+     * @return  void
+     *
+     * @author Borut Hollan <borut.hollan@easistent.com>
+     *
+     * @version 1.0
+     */
     public function saveData(array $data)
     {
         $model = resolve('hollanbo\Weather\Models\Data');
