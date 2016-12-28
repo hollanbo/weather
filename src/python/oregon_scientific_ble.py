@@ -21,6 +21,7 @@ import sys
 import logging
 import time
 import sqlite3
+import pprint
 from bluepy.btle import *
 
 # uncomment the following line to get debug information
@@ -72,6 +73,7 @@ class WeatherStation:
             return None
 
         regs = self.p.delegate.getData()
+
         if regs is not None:
             # expand INDOOR_AND_CH1_TO_3_TH_DATA_TYPE0
             self._data['index0_temperature'] = ''.join(regs['data_type0'][4:6] + regs['data_type0'][2:4])
@@ -82,25 +84,16 @@ class WeatherStation:
             self._data['index1_humidity'] = regs['data_type0'][20:22]
             self._data['index2_humidity'] = regs['data_type0'][22:24]
             self._data['index3_humidity'] = regs['data_type0'][24:26]
-            self._data['temperature_trend'] = regs['data_type0'][26:28]
-            self._data['humidity_trend'] = regs['data_type0'][28:30]
-            self._data['index0_humidity_max'] = regs['data_type0'][30:32]
-            self._data['index0_humidity_min'] = regs['data_type0'][32:34]
-            self._data['index1_humidity_max'] = regs['data_type0'][34:36]
-            self._data['index1_humidity_min'] = regs['data_type0'][36:38]
-            self._data['index2_humidity_max'] = regs['data_type0'][38:40]
-            # expand INDOOR_AND_CH1_TO_3_TH_DATA_TYPE1
-            self._data['index2_humidity_min'] = regs['data_type1'][2:4]
-            self._data['index3_humidity_max'] = regs['data_type1'][4:6]
-            self._data['index3_humidity_min'] = regs['data_type1'][6:8]
-            self._data['index0_temperature_max'] = ''.join(regs['data_type1'][10:12] + regs['data_type1'][8:10])
-            self._data['index0_temperature_min'] = ''.join(regs['data_type1'][14:16] + regs['data_type1'][12:14])
-            self._data['index1_temperature_max'] = ''.join(regs['data_type1'][18:20] + regs['data_type1'][16:18])
-            self._data['index1_temperature_min'] = ''.join(regs['data_type1'][22:24] + regs['data_type1'][20:22])
-            self._data['index2_temperature_max'] = ''.join(regs['data_type1'][26:28] + regs['data_type1'][24:26])
-            self._data['index2_temperature_min'] = ''.join(regs['data_type1'][30:32] + regs['data_type1'][28:30])
-            self._data['index3_temperature_max'] = ''.join(regs['data_type1'][34:36] + regs['data_type1'][32:34])
-            self._data['index3_temperature_min'] = ''.join(regs['data_type1'][38:40] + regs['data_type1'][36:38])
+
+            self._data['index4_temperature'] = ''.join(regs['data_type2'][4:6] + regs['data_type2'][2:4])
+            self._data['index5_temperature'] = ''.join(regs['data_type2'][8:10] + regs['data_type2'][6:8])
+            self._data['index6_temperature'] = ''.join(regs['data_type2'][12:14] + regs['data_type2'][10:12])
+            self._data['index7_temperature'] = ''.join(regs['data_type2'][16:18] + regs['data_type2'][14:16])
+            self._data['index4_humidity'] = regs['data_type2'][18:20]
+            self._data['index5_humidity'] = regs['data_type2'][20:22]
+            self._data['index6_humidity'] = regs['data_type2'][22:24]
+            self._data['index7_humidity'] = regs['data_type2'][24:26]
+
             return True
         else:
             return None
@@ -132,6 +125,26 @@ class WeatherStation:
             hum3 = self.getValue('index3_humidity')
             logging.debug('%.1f , %.1f', temp3, hum3)
 
+        if 'index4_temperature' in self._data:
+            temp4 = self.getValue('index4_temperature') / 10.0
+            hum4 = self.getValue('index4_humidity')
+            logging.debug('%.1f , %.1f', temp4, hum4)
+
+        if 'index5_temperature' in self._data:
+            temp5 = self.getValue('index5_temperature') / 10.0
+            hum5 = self.getValue('index5_humidity')
+            logging.debug('%.1f , %.1f', temp5, hum5)
+
+        if 'index6_temperature' in self._data:
+            temp6 = self.getValue('index6_temperature') / 10.0
+            hum6 = self.getValue('index6_humidity')
+            logging.debug('%.1f , %.1f', temp6, hum6)
+
+        if 'index7_temperature' in self._data:
+            temp7 = self.getValue('index7_temperature') / 10.0
+            hum7 = self.getValue('index7_humidity')
+            logging.debug('%.1f , %.1f', temp7, hum7)
+
     def disconnect(self):
         self.p.disconnect()
 
@@ -139,28 +152,25 @@ class NotificationDelegate(DefaultDelegate):
     def __init__(self):
         DefaultDelegate.__init__(self)
         self._indoorAndOutdoorTemp_type0 = None
-        self._indoorAndOutdoorTemp_type1 = None
+        self._indoorAndOutdoorTemp_type2 = None
 
     def handleNotification(self, cHandle, data):
         formatedData = binascii.b2a_hex(data)
         if cHandle == 0x0017:
-            # indoorAndOutdoorTemp indication received
-            if formatedData[0] == '8':
-                # Type1 data packet received
-                self._indoorAndOutdoorTemp_type1 = formatedData
-                # logging.debug('indoorAndOutdoorTemp_type1 = %s', formatedData)
-            else:
+            # indoorAndOutdoorTemp indication received ch 0-3
+            if formatedData[0] != '8':
                 # Type0 data packet received
                 self._indoorAndOutdoorTemp_type0 = formatedData
-                # logging.debug('indoorAndOutdoorTemp_type0 = %s', formatedData)
-        # else:
-            # skip other indications/notifications
-            # logging.debug('handle %x = %s', cHandle, formatedData)
+        if cHandle == 0x0020:
+            # indoorAndOutdoorTemp indication received ch 4-7
+            if formatedData[0] != '8':
+                # Type2 data packet received
+                self._indoorAndOutdoorTemp_type2 = formatedData
 
     def getData(self):
             if self._indoorAndOutdoorTemp_type0 is not None:
                 # return sensors data
-                return {'data_type0':self._indoorAndOutdoorTemp_type0, 'data_type1':self._indoorAndOutdoorTemp_type1}
+                return {'data_type0':self._indoorAndOutdoorTemp_type0, 'data_type2':self._indoorAndOutdoorTemp_type2}
             else:
                 return None
 
