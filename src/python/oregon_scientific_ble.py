@@ -68,32 +68,35 @@ class WeatherStation:
             while self.p.waitForNotifications(1.0):
                 # handleNotification() was called
                 continue
-            # logging.debug('Notification timeout')
         except:
             return None
 
         regs = self.p.delegate.getData()
-
+        pprint.pprint(regs)
         if regs is not None:
-            # expand INDOOR_AND_CH1_TO_3_TH_DATA_TYPE0
-            self._data['index0_temperature'] = ''.join(regs['data_type0'][4:6] + regs['data_type0'][2:4])
-            self._data['index1_temperature'] = ''.join(regs['data_type0'][8:10] + regs['data_type0'][6:8])
-            self._data['index2_temperature'] = ''.join(regs['data_type0'][12:14] + regs['data_type0'][10:12])
-            self._data['index3_temperature'] = ''.join(regs['data_type0'][16:18] + regs['data_type0'][14:16])
-            self._data['index0_humidity'] = regs['data_type0'][18:20]
-            self._data['index1_humidity'] = regs['data_type0'][20:22]
-            self._data['index2_humidity'] = regs['data_type0'][22:24]
-            self._data['index3_humidity'] = regs['data_type0'][24:26]
+            # expand INDOOR_AND_CH1_TO_3_TH_DATA_ch0_3
+            self._data['index0_temperature'] = ''.join(regs['data_ch0_3'][4:6] + regs['data_ch0_3'][2:4])
+            self._data['index1_temperature'] = ''.join(regs['data_ch0_3'][8:10] + regs['data_ch0_3'][6:8])
+            self._data['index2_temperature'] = ''.join(regs['data_ch0_3'][12:14] + regs['data_ch0_3'][10:12])
+            self._data['index3_temperature'] = ''.join(regs['data_ch0_3'][16:18] + regs['data_ch0_3'][14:16])
+            self._data['index0_humidity'] = regs['data_ch0_3'][18:20]
+            self._data['index1_humidity'] = regs['data_ch0_3'][20:22]
+            self._data['index2_humidity'] = regs['data_ch0_3'][22:24]
+            self._data['index3_humidity'] = regs['data_ch0_3'][24:26]
 
-            self._data['index4_temperature'] = ''.join(regs['data_type2'][4:6] + regs['data_type2'][2:4])
-            self._data['index5_temperature'] = ''.join(regs['data_type2'][8:10] + regs['data_type2'][6:8])
-            self._data['index6_temperature'] = ''.join(regs['data_type2'][12:14] + regs['data_type2'][10:12])
-            self._data['index7_temperature'] = ''.join(regs['data_type2'][16:18] + regs['data_type2'][14:16])
-            self._data['index4_humidity'] = regs['data_type2'][18:20]
-            self._data['index5_humidity'] = regs['data_type2'][20:22]
-            self._data['index6_humidity'] = regs['data_type2'][22:24]
-            self._data['index7_humidity'] = regs['data_type2'][24:26]
+            self._data['index4_temperature'] = ''.join(regs['ch_4_7'][4:6] + regs['ch_4_7'][2:4])
+            self._data['index5_temperature'] = ''.join(regs['ch_4_7'][8:10] + regs['ch_4_7'][6:8])
+            self._data['index6_temperature'] = ''.join(regs['ch_4_7'][12:14] + regs['ch_4_7'][10:12])
+            self._data['index7_temperature'] = ''.join(regs['ch_4_7'][16:18] + regs['ch_4_7'][14:16])
+            self._data['index4_humidity'] = regs['ch_4_7'][18:20]
+            self._data['index5_humidity'] = regs['ch_4_7'][20:22]
+            self._data['index6_humidity'] = regs['ch_4_7'][22:24]
+            self._data['index7_humidity'] = regs['ch_4_7'][24:26]
 
+            if regs['data_pressure'] is not None:
+                self._data['index0_pressure'] = ''.join(regs['data_pressure'][12:14] + regs['data_pressure'][10:12])
+            else:
+                self._data['index0_pressure'] = '';
             return True
         else:
             return None
@@ -108,7 +111,8 @@ class WeatherStation:
         if 'index0_temperature' in self._data:
             temp0 = self.getValue('index0_temperature') / 10.0
             hum0 = self.getValue('index0_humidity')
-            logging.debug('%.1f , %.1f', temp0, hum0)
+            pre0 = self.getValue('index0_pressure')
+            logging.debug('%.1f , %.1f , %.1f', temp0, hum0, pre0)
 
         if 'index1_temperature' in self._data:
             temp1 = self.getValue('index1_temperature') / 10.0
@@ -151,26 +155,33 @@ class WeatherStation:
 class NotificationDelegate(DefaultDelegate):
     def __init__(self):
         DefaultDelegate.__init__(self)
-        self._indoorAndOutdoorTemp_type0 = None
+        self._indoorAndOutdoorTemp_ch0_3 = None
         self._indoorAndOutdoorTemp_type2 = None
+        self._pressure = None
 
     def handleNotification(self, cHandle, data):
         formatedData = binascii.b2a_hex(data)
         if cHandle == 0x0017:
             # indoorAndOutdoorTemp indication received ch 0-3
             if formatedData[0] != '8':
-                # Type0 data packet received
-                self._indoorAndOutdoorTemp_type0 = formatedData
+                # ch0_3 data packet received
+                self._indoorAndOutdoorTemp_ch0_3 = formatedData
         if cHandle == 0x0020:
             # indoorAndOutdoorTemp indication received ch 4-7
             if formatedData[0] != '8':
                 # Type2 data packet received
                 self._indoorAndOutdoorTemp_type2 = formatedData
 
+        if cHandle == 0x001a:
+            # indoorAndOutdoorTemp indication received ch 4-7
+            if formatedData[0] != '8':
+                # Type2 data packet received
+                self._pressure = formatedData
+
     def getData(self):
-            if self._indoorAndOutdoorTemp_type0 is not None:
+            if self._indoorAndOutdoorTemp_ch0_3 is not None:
                 # return sensors data
-                return {'data_type0':self._indoorAndOutdoorTemp_type0, 'data_type2':self._indoorAndOutdoorTemp_type2}
+                return {'data_ch0_3':self._indoorAndOutdoorTemp_ch0_3, 'ch_4_7':self._indoorAndOutdoorTemp_type2, 'data_pressure':self._pressure}
             else:
                 return None
 
