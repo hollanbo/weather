@@ -121,7 +121,7 @@ class WeatherRepository {
         return Data::select(DB::raw('hollanbo_weather_data.*'))
             ->join(DB::raw(
                   "(select max(id) id
-                    from weather.hollanbo_weather_data
+                    from hollanbo_weather_data
                     group by sensor_id) as t2"
                 ), 'hollanbo_weather_data.id', '=', 't2.id')
             ->get();
