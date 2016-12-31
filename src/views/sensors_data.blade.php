@@ -2,7 +2,7 @@
 
 @section('content')
     @foreach ($sensors as $key => $sensor)
-        <div class="sensor-container col-xs-6 col-md-3">
+        <div class="sensor-container col-xs-6 col-md-4 col-lg-3">
             <div class="sensor-name">
                 <span class="title">Sensor</span>
                 {{ $sensor->name }}

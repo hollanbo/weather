@@ -17,11 +17,11 @@ class Sensor extends Model
 
     public function latestData()
     {
-        return $this->data()
+        return hollanbo\Weather\Models\Data::select(DB::raw('hollanbo_weather_data.* as t1'))
             ->join(DB::raw(
                   "(select max(id) id
-                    from weather.hollanbo_weather_data
+                    from hollanbo_weather_data
                     group by sensor_id) as t2"
-                ), 'hollanbo_weather_data.id', '=', 't2.id');
+                ), 't1.id', '=', 't2.id');
     }
 }
