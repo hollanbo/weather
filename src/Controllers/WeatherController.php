@@ -20,10 +20,12 @@ class WeatherController extends Controller
      */
     public function getData(WeatherRepository $repo)
     {
-        $data = $repo->readFromStation();
-        $repo->saveData($data);
+        // $data = $repo->readFromStation();
+        // $repo->saveDataBatch($data);
 
-        dd($data);
+        $sensors_data = $repo->getSensorsData();
+
+        return view('hollanbo_weather::sensors_data', $sensors_data);
     }
 
 }

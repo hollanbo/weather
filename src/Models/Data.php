@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Data extends Model
 {
-    protected $table = "hollan_weather_data";
+    public $table = "hollanbo_weather_data";
 
     public $timestamps = true;
+    public $guarded = ['id'];
+
+    public function sensor()
+    {
+        return $this->belongsTo('hollanbo\Weather\Models\Sensor');
+    }
 }

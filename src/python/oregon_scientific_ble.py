@@ -74,7 +74,7 @@ class WeatherStation:
         regs = self.p.delegate.getData()
         pprint.pprint(regs)
         if regs is not None:
-            # expand INDOOR_AND_CH1_TO_3_TH_DATA_ch0_3
+            # indoor and channel 1 to 3 data
             self._data['index0_temperature'] = ''.join(regs['data_ch0_3'][4:6] + regs['data_ch0_3'][2:4])
             self._data['index1_temperature'] = ''.join(regs['data_ch0_3'][8:10] + regs['data_ch0_3'][6:8])
             self._data['index2_temperature'] = ''.join(regs['data_ch0_3'][12:14] + regs['data_ch0_3'][10:12])
@@ -84,6 +84,7 @@ class WeatherStation:
             self._data['index2_humidity'] = regs['data_ch0_3'][22:24]
             self._data['index3_humidity'] = regs['data_ch0_3'][24:26]
 
+            # channel 4 to 7 data
             self._data['index4_temperature'] = ''.join(regs['ch_4_7'][4:6] + regs['ch_4_7'][2:4])
             self._data['index5_temperature'] = ''.join(regs['ch_4_7'][8:10] + regs['ch_4_7'][6:8])
             self._data['index6_temperature'] = ''.join(regs['ch_4_7'][12:14] + regs['ch_4_7'][10:12])
@@ -112,42 +113,42 @@ class WeatherStation:
             temp0 = self.getValue('index0_temperature') / 10.0
             hum0 = self.getValue('index0_humidity')
             pre0 = self.getValue('index0_pressure')
-            logging.debug('%.1f , %.1f , %.1f', temp0, hum0, pre0)
+            logging.debug('%d , %.1f , %.1f , %.1f', 0, temp0, hum0, pre0)
 
         if 'index1_temperature' in self._data:
             temp1 = self.getValue('index1_temperature') / 10.0
             hum1 = self.getValue('index1_humidity')
-            logging.debug('%.1f , %.1f', temp1, hum1)
+            logging.debug('%d , %.1f , %.1f', 1, temp1, hum1)
 
         if 'index2_temperature' in self._data:
             temp2 = self.getValue('index2_temperature') / 10.0
             hum2 = self.getValue('index2_humidity')
-            logging.debug('%.1f , %.1f', temp2, hum2)
+            logging.debug('%d , %.1f , %.1f', 2, temp2, hum2)
 
         if 'index3_temperature' in self._data:
             temp3 = self.getValue('index3_temperature') / 10.0
             hum3 = self.getValue('index3_humidity')
-            logging.debug('%.1f , %.1f', temp3, hum3)
+            logging.debug('%d , %.1f , %.1f', 3, temp3, hum3)
 
         if 'index4_temperature' in self._data:
             temp4 = self.getValue('index4_temperature') / 10.0
             hum4 = self.getValue('index4_humidity')
-            logging.debug('%.1f , %.1f', temp4, hum4)
+            logging.debug('%d , %.1f , %.1f', 4, temp4, hum4)
 
         if 'index5_temperature' in self._data:
             temp5 = self.getValue('index5_temperature') / 10.0
             hum5 = self.getValue('index5_humidity')
-            logging.debug('%.1f , %.1f', temp5, hum5)
+            logging.debug('%d , %.1f , %.1f', 5, temp5, hum5)
 
         if 'index6_temperature' in self._data:
             temp6 = self.getValue('index6_temperature') / 10.0
             hum6 = self.getValue('index6_humidity')
-            logging.debug('%.1f , %.1f', temp6, hum6)
+            logging.debug('%d , %.1f , %.1f', 6, temp6, hum6)
 
         if 'index7_temperature' in self._data:
             temp7 = self.getValue('index7_temperature') / 10.0
             hum7 = self.getValue('index7_humidity')
-            logging.debug('%.1f , %.1f', temp7, hum7)
+            logging.debug('%d , %.1f , %.1f', 7, temp7, hum7)
 
     def disconnect(self):
         self.p.disconnect()

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHollanWeatherDataTable extends Migration
+class CreateHollanboWeatherSensorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateHollanWeatherDataTable extends Migration
      */
     public function up()
     {
-        Schema::create('hollanbo_weather_data', function (Blueprint $table) {
+        Schema::create('hollanbo_weather_sensors', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('sensor_id')->unsigned()->nullable();
-            $table->string('temperature')->nullable();
-            $table->string('humidity')->nullable();
-            $table->string('pressure')->nullable();
+            $table->string('name');
+            $table->integer('channel');
+            $table->string('station_mac');
             $table->timestamps();
+
         });
     }
 
@@ -30,6 +30,6 @@ class CreateHollanWeatherDataTable extends Migration
      */
     public function down()
     {
-        Schema::drop('hollanbo_weather_data');
+        Schema::drop('hollanbo_weather_sensors');
     }
 }
