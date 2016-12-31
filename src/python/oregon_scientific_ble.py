@@ -72,7 +72,7 @@ class WeatherStation:
             return None
 
         regs = self.p.delegate.getData()
-        pprint.pprint(regs)
+
         if regs is not None:
             # indoor and channel 1 to 3 data
             self._data['index0_temperature'] = ''.join(regs['data_ch0_3'][4:6] + regs['data_ch0_3'][2:4])
@@ -97,7 +97,7 @@ class WeatherStation:
             if regs['data_pressure'] is not None:
                 self._data['index0_pressure'] = ''.join(regs['data_pressure'][12:14] + regs['data_pressure'][10:12])
             else:
-                self._data['index0_pressure'] = '';
+                self._data['index0_pressure'] = 'ff';
             return True
         else:
             return None
@@ -113,6 +113,7 @@ class WeatherStation:
             temp0 = self.getValue('index0_temperature') / 10.0
             hum0 = self.getValue('index0_humidity')
             pre0 = self.getValue('index0_pressure')
+
             logging.debug('%d , %.1f , %.1f , %.1f', 0, temp0, hum0, pre0)
 
         if 'index1_temperature' in self._data:

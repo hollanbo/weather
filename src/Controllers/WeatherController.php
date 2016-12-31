@@ -20,8 +20,8 @@ class WeatherController extends Controller
      */
     public function getData(WeatherRepository $repo)
     {
-        // $data = $repo->readFromStation();
-        // $repo->saveDataBatch($data);
+        $data = $repo->readFromStation();
+        $repo->saveDataBatch($data);
 
         $sensors_data = $repo->getSensorsData();
 
