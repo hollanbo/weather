@@ -22,6 +22,10 @@
             .title {
                 font-size: 24px;
             }
+
+            .refresh {
+                margin-top: 16px;
+            }
         </style>
     </head>
     <body>

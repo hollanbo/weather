@@ -1,4 +1,6 @@
 <?php
 
-Route::get('hollanbo/weather',
-  'hollanbo\Weather\Controllers\WeatherController@getData');
+Route::group(['prefix' => 'hollanbo/weather'], function () {
+    Route::get('/', 'hollanbo\Weather\Controllers\WeatherController@getData')->name('hollanbo.weather.getData');
+    Route::get('fresh', 'hollanbo\Weather\Controllers\WeatherController@getFreshData')->name('hollanbo.weather.fresh');
+});

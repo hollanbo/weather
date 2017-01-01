@@ -1,6 +1,9 @@
 @extends('hollanbo_weather::master')
 
 @section('content')
+    <div class="col-xs-12 refresh">
+        <a href="{{ route('hollanbo.weather.fresh') }}" class="glyphicon glyphicon-refresh" aria-hidden="true"></a>
+    </div>
     @foreach ($sensors as $key => $sensor)
         <div class="sensor-container col-xs-6 col-md-4 col-lg-3">
             <div class="sensor-name">
