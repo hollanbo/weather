@@ -39,6 +39,6 @@ class GetWeatherData extends Command
     public function handle(WeatherRepository $repo)
     {
         $data = $repo->readFromStation();
-        $repo->saveData($data);
+        $repo->saveDataBatch($data);
     }
 }
