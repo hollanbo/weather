@@ -21,7 +21,7 @@
                     <div>
                         @if (isset($data[$sensor->id]->humidity))
                             <span class="title">Humidity</span>
-                            {{ $data[$sensor->id]->humidity }}%
+                            {{ $data[$sensor->id]->humidity_percent }}%
                         @endif
                     </div>
                     <div>
@@ -29,6 +29,10 @@
                             <span class="title">Pressure</span>
                             {{ $data[$sensor->id]->pressure }} Pa
                         @endif
+                    </div>
+                    <div>
+                        <span class="title">Time</span>
+                        {{ $data[$sensor->id]->created_time }}
                     </div>
                 </div>
             </div>

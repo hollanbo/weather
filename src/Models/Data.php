@@ -15,4 +15,14 @@ class Data extends Model
     {
         return $this->belongsTo('hollanbo\Weather\Models\Sensor');
     }
+
+    public function getHumidityPercentAttribute()
+    {
+        return $this->humidity * 100;
+    }
+
+    public function getCreatedTimeAttribute()
+    {
+        return $this->created_at->format('H:i');
+    }
 }
